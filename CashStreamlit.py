@@ -21,12 +21,15 @@ class CSVReaderApp():
         self.dataframes = {}
     
     def load(self):
-        self.dfa = pd.DataFrame(list(self.db['indexswings'].find({},{"_id": 0})))
+        a = list(self.db['indexswings'].find({},{"_id": 0}))
+        b = list(self.db['closetoclose'].find({},{"_id": 0}))
+        c = list(self.db['monthonmonth'].find({},{"_id": 0}))
+        self.dfa = pd.DataFrame(a)
         st.write(self.dfa.head())
-        self.dfb = pd.DataFrame(list(self.db['closetoclose'].find({},{"_id": 0})))
-        st.write( self.dfb.head())
-        self.dfc = pd.DataFrame(list(self.db['monthonmonth'].find({},{"_id": 0})))
-        st.write( self.dfc.head())
+        self.dfb = pd.DataFrame(b)
+        st.write(self.dfb.head())
+        self.dfc = pd.DataFrame(c)
+        st.write(self.dfc.head())
         
     def upload(self):
         with st.sidebar.expander("📂 File Actions", expanded=False):  # Wrap everything inside expander
