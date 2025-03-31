@@ -37,9 +37,9 @@ class CSVReaderApp():
         self.dfb = find_pandas_all(self.db['closetoclose'], {}, {"_id": 0})
         self.dfc = find_pandas_all(self.db['monthonmonth'], {}, {"_id": 0})
 
-        print(self.dfa.head())
-        print(self.dfb.head())
-        print(self.dfc.head())
+        st.write(self.dfa.head())
+        st.write(self.dfb.head())
+        st.write(self.dfc.head())
         
     # def upload(self):
     #     with st.sidebar.expander("📂 File Actions", expanded=False):  # Wrap everything inside expander
