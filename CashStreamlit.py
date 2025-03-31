@@ -17,7 +17,7 @@ class CSVReaderApp():
         # self.folder_path = r"D:\CashIndexSwings\StreamlitFiles"
         self.IndexSwings = ""
         self.month_high_data = None
-        self.client = MongoClient("mongodb+srv://meenu:8770302706@cluster0.0jvqc5o.mongodb.net/")
+        self.client = MongoClient("mongodb+srv://meenu:8770302706@cluster0.0jvqc5o.mongodb.net/?tls=true&AllowInvalidCertificates=true")
         self.db = self.client["cashdataanalysis"]
         self.files = {"Index Swing": None, "Close to Close": None, "Month on Month": None}
         self.dataframes = {}
