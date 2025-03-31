@@ -34,13 +34,13 @@ class CSVReaderApp():
     #     st.write(self.dfc.head())
 
     def load(self):
-        dfa = db['indexswings'].find_pandas_all({})
+        dfa = self.db['indexswings'].find_pandas_all({})
         st.write(dfa.head())
     
-        dfb = db['closetoclose'].find_pandas_all({})
+        dfb = self.db['closetoclose'].find_pandas_all({})
         st.write(dfb.head())
     
-        dfc = db['monthonmonth'].find_pandas_all({})
+        dfc = self.db['monthonmonth'].find_pandas_all({})
         st.write(dfc.head())
         
     # def upload(self):
