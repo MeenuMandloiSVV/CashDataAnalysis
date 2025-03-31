@@ -997,8 +997,8 @@ class CSVReaderApp():
         # Display Centered Box with Heading
         # st.markdown('<div class="centered-box">🎯📊 Cash Market Insights: Tracking Stock Trends & Movements</div><br><hr>', unsafe_allow_html=True)
         
-        self.upload() 
-        # self.load()
+        # self.upload() 
+        self.load()
         # self.IndexSwingsFunc()
         # self.DateFiltersForCase1()
         # self.MonthonMonthData()
