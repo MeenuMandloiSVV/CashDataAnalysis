@@ -1,0 +1,22 @@
+IndexPrice,IndexDate,Type,IndexClose,PercentChange,Days Difference,Time Difference String,Top to Top Days Only,Top to Top Time String,Index
+480.38,1990-10-09,Top,480.38,,,,,,NIFTY
+306.22,1991-01-25,Bottom,306.22,-36.25,108.0,3 month,,,NIFTY
+1280.92,1992-04-23,Top,1280.92,318.3,454.0,1 year 2 month,562,1 year 6 month,NIFTY
+599.51,1993-04-26,Bottom,599.51,-53.2,368.0,1 year,,,NIFTY
+1384.94,1994-09-12,Top,1384.94,131.01,504.0,1 year 4 month,872,2 year 4 month,NIFTY
+775.43,1996-12-04,Bottom,788.15,-44.01,814.0,2 year 2 month,,,NIFTY
+1818.15,2000-02-23,Top,1696.4,134.47,1176.0,3 year 2 month,1990,5 year 5 month,NIFTY
+849.95,2001-09-21,Bottom,854.2,-53.25,576.0,1 year 7 month,,,NIFTY
+2014.65,2004-01-09,Top,1971.9,137.03,840.0,2 year 3 month,1416,3 year 10 month,NIFTY
+1292.2,2004-05-17,Bottom,1388.75,-35.86,129.0,4 month,,,NIFTY
+3774.15,2006-05-11,Top,3701.05,192.07,724.0,1 year 11 month,853,2 year 4 month,NIFTY
+2595.65,2006-06-14,Bottom,2632.8,-31.23,34.0,1 month,,,NIFTY
+6357.1,2008-01-08,Top,6287.85,144.91,573.0,1 year 6 month,607,1 year 8 month,NIFTY
+2252.75,2008-10-27,Bottom,2524.2,-64.56,293.0,9 month,,,NIFTY
+9119.2,2015-03-04,Top,8922.65,304.8,2319.0,6 year 4 month,2612,7 year 1 month,NIFTY
+6825.8,2016-02-29,Bottom,6987.05,-25.15,362.0,12 month,,,NIFTY
+12430.5,2020-01-20,Top,12224.55,82.11,1421.0,3 year 10 month,1783,4 year 10 month,NIFTY
+7511.1,2020-03-24,Bottom,7801.05,-39.58,64.0,2 month,,,NIFTY
+26277.35,2024-09-27,Top,26178.95,249.85,1648.0,4 year 6 month,1712,4 year 8 month,NIFTY
+21964.6,2025-03-04,Bottom,22082.65,-16.41,158.0,5 month,,,NIFTY
+23649.2,2025-03-28,Top,23519.35,7.67,24.0,24 days,182,6 month,NIFTY
