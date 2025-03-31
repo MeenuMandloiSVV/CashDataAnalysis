@@ -2,13 +2,14 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px
+from pymongoarrow.api import find_pandas_all
 import streamlit.components.v1 as components
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 # from MongoDBconnection import MongoDBProcessor
 from pymongo import MongoClient
 
-UPLOAD_DIR = "uploads"  # Directory to store uploaded files
-os.makedirs(UPLOAD_DIR, exist_ok=True)  # Ensure the directory exists
+# UPLOAD_DIR = "uploads"  # Directory to store uploaded files
+# os.makedirs(UPLOAD_DIR, exist_ok=True)  # Ensure the directory exists
 
 class CSVReaderApp():
     def __init__(self):
@@ -20,67 +21,76 @@ class CSVReaderApp():
         self.files = {"Index Swing": None, "Close to Close": None, "Month on Month": None}
         self.dataframes = {}
     
+    # def load(self):
+    #     a = list(self.db['indexswings'].find({},{"_id": 0}))
+    #     b = list(self.db['closetoclose'].find({},{"_id": 0}))
+    #     c = list(self.db['monthonmonth'].find({},{"_id": 0}))
+    #     self.dfa = pd.DataFrame(a)
+    #     st.write(self.dfa.head())
+    #     self.dfb = pd.DataFrame(b)
+    #     st.write(self.dfb.head())
+    #     self.dfc = pd.DataFrame(c)
+    #     st.write(self.dfc.head())
+
     def load(self):
-        a = list(self.db['indexswings'].find({},{"_id": 0}))
-        b = list(self.db['closetoclose'].find({},{"_id": 0}))
-        c = list(self.db['monthonmonth'].find({},{"_id": 0}))
-        self.dfa = pd.DataFrame(a)
-        st.write(self.dfa.head())
-        self.dfb = pd.DataFrame(b)
-        st.write(self.dfb.head())
-        self.dfc = pd.DataFrame(c)
-        st.write(self.dfc.head())
+        self.dfa = find_pandas_all(self.db['indexswings'], {}, {"_id": 0})
+        self.dfb = find_pandas_all(self.db['closetoclose'], {}, {"_id": 0})
+        self.dfc = find_pandas_all(self.db['monthonmonth'], {}, {"_id": 0})
+
+        print(self.dfa.head())
+        print(self.dfb.head())
+        print(self.dfc.head())
         
-    def upload(self):
-        with st.sidebar.expander("📂 File Actions", expanded=False):  # Wrap everything inside expander
-            st.write("## Upload Files")
-            for key in self.files.keys():
-                if self.files[key] is None:  # Only show uploader if no file exists
-                    uploaded_file = st.file_uploader(f"Upload {key}", key=key)
-                    if uploaded_file is not None:
-                        file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
-                        with open(file_path, "wb") as f:
-                            f.write(uploaded_file.getbuffer())  # Save file to disk
-                        self.files[key] = file_path  # Store file path
-                        self.dataframes[key] = pd.read_csv(file_path)  # Read file into DataFrame
+    # def upload(self):
+    #     with st.sidebar.expander("📂 File Actions", expanded=False):  # Wrap everything inside expander
+    #         st.write("## Upload Files")
+    #         for key in self.files.keys():
+    #             if self.files[key] is None:  # Only show uploader if no file exists
+    #                 uploaded_file = st.file_uploader(f"Upload {key}", key=key)
+    #                 if uploaded_file is not None:
+    #                     file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
+    #                     with open(file_path, "wb") as f:
+    #                         f.write(uploaded_file.getbuffer())  # Save file to disk
+    #                     self.files[key] = file_path  # Store file path
+    #                     self.dataframes[key] = pd.read_csv(file_path)  # Read file into DataFrame
 
-            # Button to show uploaded files
-            if st.button("Show All Uploaded Files"):
-                self.show_uploaded_files()
+    #         # Button to show uploaded files
+    #         if st.button("Show All Uploaded Files"):
+    #             self.show_uploaded_files()
 
-    def show_uploaded_files(self):
-        st.write("## Uploaded Files Preview")
+    # def show_uploaded_files(self):
+    #     st.write("## Uploaded Files Preview")
 
-        if not self.dataframes:
-            st.write("No files uploaded yet.")
-            return
+    #     if not self.dataframes:
+    #         st.write("No files uploaded yet.")
+    #         return
 
-        for key, file_path in list(self.files.items()):
-            if file_path is not None and key in self.dataframes:
-                df = self.dataframes[key]
-                col1, col2 = st.columns([4, 1])  # Layout for buttons
+    #     for key, file_path in list(self.files.items()):
+    #         if file_path is not None and key in self.dataframes:
+    #             df = self.dataframes[key]
+    #             col1, col2 = st.columns([4, 1])  # Layout for buttons
                 
-                with col1:
-                    st.write(f"### {key} - {os.path.basename(file_path)}")  # Show file name
-                    st.write(df.head())  # Show first 5 rows
+    #             with col1:
+    #                 st.write(f"### {key} - {os.path.basename(file_path)}")  # Show file name
+    #                 st.write(df.head())  # Show first 5 rows
 
-                with col2:
-                    # Delete Button
-                    if st.button(f"❌ Delete {key}", key=f"delete_{key}"):
-                        os.remove(file_path)  # Delete file from disk
-                        self.files[key] = None
-                        del self.dataframes[key]
-                        st.experimental_rerun()  # Refresh UI
+    #             with col2:
+    #                 # Delete Button
+    #                 if st.button(f"❌ Delete {key}", key=f"delete_{key}"):
+    #                     os.remove(file_path)  # Delete file from disk
+    #                     self.files[key] = None
+    #                     del self.dataframes[key]
+    #                     st.experimental_rerun()  # Refresh UI
 
-                    # Replace Button
-                    new_file = st.file_uploader(f"Replace {key}", key=f"replace_{key}")
-                    if new_file is not None:
-                        new_file_path = os.path.join(UPLOAD_DIR, new_file.name)
-                        with open(new_file_path, "wb") as f:
-                            f.write(new_file.getbuffer())  # Save new file
-                        self.files[key] = new_file_path
-                        self.dataframes[key] = pd.read_csv(new_file_path)
-                        st.experimental_rerun()  # Refresh UI
+    #                 # Replace Button
+    #                 new_file = st.file_uploader(f"Replace {key}", key=f"replace_{key}")
+    #                 if new_file is not None:
+    #                     new_file_path = os.path.join(UPLOAD_DIR, new_file.name)
+    #                     with open(new_file_path, "wb") as f:
+    #                         f.write(new_file.getbuffer())  # Save new file
+    #                     self.files[key] = new_file_path
+    #                     self.dataframes[key] = pd.read_csv(new_file_path)
+    #                     st.experimental_rerun()  # Refresh UI
                         
                         
     def rank_month_end_dates(self, df):
