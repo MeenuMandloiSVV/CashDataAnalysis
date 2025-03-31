@@ -1,6 +1,6 @@
 streamlit-aggrid==1.0.4.post3
 plotly==5.15.0
-pymongo==4.4.1
 python_dateutil==2.8.2
-
-
+pymongoarrow==1.7.1
+pymongo[srv]>=4.4
+pyarrow>=17.0
