@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import os
 import plotly.express as px
 import streamlit.components.v1 as components
@@ -114,16 +113,19 @@ class CSVReaderApp():
             nifty_rows = formatted_df[formatted_df["Symbol"] == "NIFTY"]
             formatted_df = formatted_df[formatted_df["Symbol"] != "NIFTY"]  # 🔥 **Remove NIFTY rows to avoid duplication**
 
-        # **Handle numeric columns**
-        numeric_cols = formatted_df.select_dtypes(include=[np.number]).columns
-        formatted_df[numeric_cols] = formatted_df[numeric_cols].replace([np.inf, -np.inf], np.nan)
-
-        int_mask = (formatted_df[numeric_cols] % 1 == 0) & (~formatted_df[numeric_cols].isna())
-        formatted_df[numeric_cols] = np.where(
-            int_mask,
-            formatted_df[numeric_cols].fillna(0).astype(int),
-            formatted_df[numeric_cols].round(2)
-        )
+        numeric_cols = formatted_df.select_dtypes(include=['number']).columns
+        formatted_df[numeric_cols] = formatted_df[numeric_cols].replace([10**13, -10**13], pd.NA)
+        
+        # Apply formatting in one step
+        def format_value(x):
+            if pd.isna(x):
+                return x
+            elif x % 1 == 0:
+                return int(x)
+            else:
+                return round(x, 2)
+        
+        formatted_df[numeric_cols] = formatted_df[numeric_cols].applymap(format_value)
 
         # **Grid Options**
         gb = GridOptionsBuilder.from_dataframe(formatted_df)
@@ -238,7 +240,7 @@ class CSVReaderApp():
         
         # Define range buckets
         bins = [-100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 
-                20, 40, 70, 100, 300, 1000, np.inf]
+                20, 40, 70, 100, 300, 1000, 10000000]
         labels = [f"{low} to {high}" for low, high in zip(bins[:-1], bins[1:])]
 
         # Fetch stock change data from `self.CaseClosetoClosedata`
@@ -849,7 +851,7 @@ class CSVReaderApp():
 
                 ranges = [
                     (0, 20), (20, 40), (40, 70),
-                    (70, 100), (100, 300), (300, 1000), (1000, np.inf)
+                    (70, 100), (100, 300), (300, 1000), (1000, 10000000)
                 ]
 
                 summary_result = []
