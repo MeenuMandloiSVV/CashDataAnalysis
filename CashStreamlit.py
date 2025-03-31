@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px
-from pymongoarrow.api import find_pandas_all
+from pymongoarrow.monkey import patch_all
 import streamlit.components.v1 as components
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 # from MongoDBconnection import MongoDBProcessor
 from pymongo import MongoClient
+patch_all()
 
 # UPLOAD_DIR = "uploads"  # Directory to store uploaded files
 # os.makedirs(UPLOAD_DIR, exist_ok=True)  # Ensure the directory exists
@@ -33,13 +34,14 @@ class CSVReaderApp():
     #     st.write(self.dfc.head())
 
     def load(self):
-        self.dfa = find_pandas_all(self.db['indexswings'], {}, {"_id": 0})
-        self.dfb = find_pandas_all(self.db['closetoclose'], {}, {"_id": 0})
-        self.dfc = find_pandas_all(self.db['monthonmonth'], {}, {"_id": 0})
-
-        st.write(self.dfa.head())
-        st.write(self.dfb.head())
-        st.write(self.dfc.head())
+        dfa = db['indexswings'].find_pandas_all({})
+        st.write(dfa.head())
+    
+        dfb = db['closetoclose'].find_pandas_all({})
+        st.write(dfb.head())
+    
+        dfc = db['monthonmonth'].find_pandas_all({})
+        st.write(dfc.head())
         
     # def upload(self):
     #     with st.sidebar.expander("📂 File Actions", expanded=False):  # Wrap everything inside expander
